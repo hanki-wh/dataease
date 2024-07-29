@@ -15,6 +15,7 @@ import io.dataease.extensions.datasource.vo.DatasourceConfiguration;
 import io.dataease.model.BusiNodeRequest;
 import io.dataease.model.BusiNodeVO;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,7 @@ public interface DatasourceApi {
     ReportApiDto queryBtn(@PathVariable("btnId") String btnId);
 
     @GetMapping("/download/report")
-    ResponseEntity<byte[]> testReport();
+    void testReport(HttpServletResponse response);
 
     @PostMapping("/update")
     DatasourceDTO update(@RequestBody DatasourceDTO dataSourceDTO) throws DEException;

@@ -1,9 +1,15 @@
 package io.dataease.datasource.server;
 
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -360,22 +366,28 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     @Override
-    public ResponseEntity<byte[]> testReport() {
-        ClassPathResource resource = new ClassPathResource("excel/test.xlsx");
+    public void testReport(HttpServletResponse response) {
+        String text = "test txt。";
 
-        if (!resource.exists()) {
-            return ResponseEntity.notFound().build();
+        try {
+            OutputStream outputStream = response.getOutputStream();
+            response.setContentType(MediaType.TEXT_PLAIN_VALUE);
+            response.setHeader("Content-disposition", "attachment;filename=test.txt");
+
+            ByteArrayInputStream fileInputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.flush();
+            outputStream.close();
+            fileInputStream.close();
+            response.flushBuffer();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        byte[] bytes = this.loadFileAsBytesArray(resource);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", resource.getFilename());
-
-        return ResponseEntity.ok()
-            .headers(headers)
-            .body(bytes);
     }
 
     private byte[] loadFileAsBytesArray(ClassPathResource resource) {
