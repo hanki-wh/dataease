@@ -33,36 +33,43 @@
               </div>
             </div>
           </div>
+          <div class="gap"><button @click="handleSave" class="btn">保存</button></div>
           <!-- HTTP 请求参数 -->
-          <el-form-item>
-            <api-http-request-form
-              v-if="edit_api_item"
-              :request="apiItem.request"
-              :value-list="valueList"
-              @changeId="changeId"
-            />
-          </el-form-item>
+          <!-- todo -->
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="description" label="名称" width="180"></el-table-column>
+            <el-table-column prop="name" label="请求"></el-table-column>
+            <el-table-column prop="apiUrl" label="地址" width="280"></el-table-column>
+          </el-table>
+          <div></div>
         </div>
       </div>
-      <div class="gap"><button @click="handleSave" class="btn">保存</button></div>
     </div>
   </el-drawer>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { saveReportApi } from '@/api/datasource'
+import { ref, onMounted } from 'vue'
+import { saveReportApi, getReportApi } from '@/api/datasource'
 import { ElMessage } from 'element-plus-secondary'
-// import type { ApiRequest } from 'src/views/visualized/data/datasource/form/ApiHttpRequestDraw.vue'
-// import ApiHttpRequestForm from 'src/views/visualized/data/datasource/form/ApiHttpRequestDraw.vue'
+
+const tableData = ref([])
+onMounted(async () => {
+  try {
+    getReportApi().then(res => {
+      if (res) {
+        console.log(res)
+        tableData.value = res
+      }
+    })
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
+})
 
 const drawer = ref(false)
 const direction = ref('rtl')
 const active = ref(0)
-
-const next = () => {
-  active.value = (active.value + 1) % 3
-}
 
 const init = () => {
   drawer.value = true

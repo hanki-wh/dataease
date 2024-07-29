@@ -172,3 +172,9 @@ export const saveReportApi = async (data = {}): Promise<IResponse> => {
     return res?.data
   })
 }
+
+export const getReportApi = async (): Promise<IResponse> => {
+  return request.get({ url: '/datasource/queryAllReportApi' }).then(res => {
+    return res?.data
+  })
+}
