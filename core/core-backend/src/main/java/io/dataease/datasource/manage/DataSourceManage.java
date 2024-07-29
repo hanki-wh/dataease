@@ -6,12 +6,15 @@ import io.dataease.commons.constants.OptConstants;
 import io.dataease.commons.constants.TaskStatus;
 import io.dataease.constant.DataSourceType;
 import io.dataease.datasource.dao.auto.entity.CoreDatasource;
+import io.dataease.datasource.dao.auto.entity.CoreReportApi;
 import io.dataease.datasource.dao.auto.mapper.CoreDatasourceMapper;
+import io.dataease.datasource.dao.auto.mapper.CoreReportApiMapper;
 import io.dataease.datasource.dao.ext.mapper.DataSourceExtMapper;
 import io.dataease.datasource.dao.ext.po.DataSourceNodePO;
 import io.dataease.datasource.dto.DatasourceNodeBO;
 import io.dataease.exception.DEException;
 import io.dataease.extensions.datasource.dto.DatasourceDTO;
+import io.dataease.extensions.datasource.dto.ReportApiDto;
 import io.dataease.i18n.Translator;
 import io.dataease.license.config.XpackInteract;
 import io.dataease.model.BusiNodeRequest;
@@ -41,6 +44,9 @@ public class DataSourceManage {
 
     @Resource
     private CoreOptRecentManage coreOptRecentManage;
+
+    @Resource
+    private CoreReportApiMapper coreReportApiMapper;
 
     private DatasourceNodeBO rootNode() {
         return new DatasourceNodeBO(0L, "root", false, 7, -1L, 0, "mysql");
@@ -83,6 +89,28 @@ public class DataSourceManage {
         coreDatasourceMapper.insert(coreDatasource);
         coreOptRecentManage.saveOpt(coreDatasource.getId(), OptConstants.OPT_RESOURCE_TYPE.DATASOURCE, OptConstants.OPT_TYPE.NEW);
     }
+
+    @XpackInteract(value = "datasourceResourceTree", before = false)
+    public void innerSaveReportApi(ReportApiDto reportApiDto) {
+        CoreReportApi coreReportApi = new CoreReportApi();
+        BeanUtils.copyBean(coreReportApi, reportApiDto);
+        coreReportApiMapper.insert(coreReportApi);
+    }
+
+    @XpackInteract(value = "datasourceResourceTree", replace = true)
+    public List<ReportApiDto> getAllReportApi() {
+        List<CoreReportApi> list = coreReportApiMapper.selectList(new QueryWrapper<>());
+
+        List<ReportApiDto> res = new ArrayList<>();;
+        if(!CollectionUtils.isEmpty(list))
+            list.forEach(e->{
+                ReportApiDto reportApiDto= new ReportApiDto();
+                res.add(reportApiDto);
+                BeanUtils.copyBean(reportApiDto, e);
+            });
+        return res;
+    }
+
 
     public void checkName(DatasourceDTO dto) {
         QueryWrapper<CoreDatasource> wrapper = new QueryWrapper<>();

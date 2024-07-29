@@ -322,13 +322,13 @@ public class DatasourceServer implements DatasourceApi {
     @Override
     public ReportApiDto saveReportApi(ReportApiDto reportApiDto) throws DEException {
         reportApiDto.setId(IDUtils.snowID());
-        // dataSourceManage.innerSave(reportApiDto);
+        dataSourceManage.innerSaveReportApi(reportApiDto);
         return reportApiDto;
     }
 
     @Override
-    public List<ReportApiDto> queryReportApi(String keyWord) {
-        return null;
+    public List<ReportApiDto> queryAllReportApi() {
+        return dataSourceManage.getAllReportApi();
     }
 
     @DeLog(id = "#p0.id", ot = LogOT.MODIFY, st = LogST.DATASOURCE)
