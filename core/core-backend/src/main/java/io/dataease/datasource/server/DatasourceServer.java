@@ -1,5 +1,15 @@
 package io.dataease.datasource.server;
 
+import java.io.IOException;
+import java.io.InputStream;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -48,12 +58,18 @@ import io.dataease.system.dao.auto.entity.CoreSysSetting;
 import io.dataease.system.manage.CoreUserManage;
 import io.dataease.utils.*;
 import jakarta.annotation.Resource;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.TriggerKey;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -329,6 +345,45 @@ public class DatasourceServer implements DatasourceApi {
     @Override
     public List<ReportApiDto> queryAllReportApi() {
         return dataSourceManage.getAllReportApi();
+    }
+
+    @Override
+    public void saveBtnApiUrl(ReportBtnDto reportBtnDto) {
+        // TODO
+        reportBtnDto.setId(IDUtils.snowID());
+        dataSourceManage.innerSaveReportBtn(reportBtnDto);
+    }
+
+    @Override
+    public ReportApiDto queryBtn(String btnId) {
+        return dataSourceManage.getReportBtn(Long.parseLong(btnId));
+    }
+
+    @Override
+    public ResponseEntity<byte[]> testReport() {
+        ClassPathResource resource = new ClassPathResource("excel/test.xlsx");
+
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] bytes = this.loadFileAsBytesArray(resource);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", resource.getFilename());
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(bytes);
+    }
+
+    private byte[] loadFileAsBytesArray(ClassPathResource resource) {
+        try (InputStream is = resource.getInputStream()) {
+            return is.readAllBytes();
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
     }
 
     @DeLog(id = "#p0.id", ot = LogOT.MODIFY, st = LogST.DATASOURCE)
