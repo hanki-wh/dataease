@@ -127,12 +127,9 @@ onMounted(() => {
       @select="handleSelect"
     >
       <HeaderMenuItem v-for="menu in routers" :key="menu.path" :menu="menu"></HeaderMenuItem>
-      <div @click="openDrawer">
+      <div @click="openDrawer" class="add-menu">
         <HeaderMenuItem
           :menu="{
-            path: '/add-menu',
-            name: 'add Menu',
-            icon: 'fa fa-star',
             meta: {
               title: '报表导出'
             }
@@ -310,5 +307,10 @@ onMounted(() => {
 .ai-icon-tips {
   font-size: 24px !important;
   z-index: 10001;
+}
+
+.add-menu {
+  display: flex;
+  align-items: center;
 }
 </style>
