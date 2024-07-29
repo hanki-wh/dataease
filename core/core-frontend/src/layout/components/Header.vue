@@ -19,7 +19,7 @@ import AiComponent from '@/layout/components/AiComponent.vue'
 import { findBaseParams } from '@/api/aiComponent'
 import ExportExcel from '@/views/visualized/data/dataset/ExportExcel.vue'
 import AiTips from '@/layout/components/AiTips.vue'
-import ExportReportPop from '@/layout/components/ExportPop.vue'
+import ExportReportDrawer from '@/layout/components/ExportReportDrawer.vue'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const { push } = useRouter()
@@ -90,11 +90,11 @@ const aiTipsConfirm = () => {
   showOverlay.value = false
 }
 
-const showModal = ref(false)
-const showExportDialog = () => {
-  showModal.value = !showModal.value
-  alert(showModal.value)
+const openDrawer = () => {
+  reportDrawer.value.init()
 }
+
+const reportDrawer = ref(false)
 
 onMounted(() => {
   initShowSystem()
@@ -127,7 +127,7 @@ onMounted(() => {
       @select="handleSelect"
     >
       <HeaderMenuItem v-for="menu in routers" :key="menu.path" :menu="menu"></HeaderMenuItem>
-      <div @click="showExportDialog">
+      <div @click="openDrawer">
         <HeaderMenuItem
           :menu="{
             path: '/add-menu',
@@ -140,9 +140,9 @@ onMounted(() => {
         />
       </div>
     </el-menu>
-    <div>
-      <ExportReportPop :open="showModal" />
-    </div>
+
+    <ExportReportDrawer ref="reportDrawer" />
+
     <div class="operate-setting" v-if="!desktop">
       <XpackComponent jsname="c3dpdGNoZXI=" />
       <el-icon
