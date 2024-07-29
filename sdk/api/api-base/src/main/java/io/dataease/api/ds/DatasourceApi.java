@@ -41,8 +41,8 @@ public interface DatasourceApi {
     @PostMapping("/saveReportApi")
     ReportApiDto saveReportApi(@RequestBody ReportApiDto reportApiDto) throws DEException;
 
-    @GetMapping("/queryReportApi/{keyWord}")
-    List<ReportApiDto> queryReportApi(@PathVariable("keyWord") String keyWord);
+    @GetMapping("/queryAllReportApi")
+    List<ReportApiDto> queryAllReportApi();
 
     @PostMapping("/update")
     DatasourceDTO update(@RequestBody DatasourceDTO dataSourceDTO) throws DEException;
