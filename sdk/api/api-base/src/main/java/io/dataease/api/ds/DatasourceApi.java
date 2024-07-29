@@ -8,6 +8,7 @@ import io.dataease.auth.DePermit;
 import io.dataease.exception.DEException;
 import io.dataease.extensions.datasource.dto.DatasetTableDTO;
 import io.dataease.extensions.datasource.dto.DatasourceDTO;
+import io.dataease.extensions.datasource.dto.ReportApiDto;
 import io.dataease.extensions.datasource.dto.TableField;
 import io.dataease.extensions.datasource.vo.DatasourceConfiguration;
 import io.dataease.model.BusiNodeRequest;
@@ -36,6 +37,12 @@ public interface DatasourceApi {
 
     @PostMapping("/save")
     DatasourceDTO save(@RequestBody DatasourceDTO dataSourceDTO) throws DEException;
+
+    @PostMapping("/saveReportApi")
+    ReportApiDto saveReportApi(@RequestBody ReportApiDto reportApiDto) throws DEException;
+
+    @GetMapping("/queryReportApi/{keyWord}")
+    List<ReportApiDto> queryReportApi(@PathVariable("keyWord") String keyWord);
 
     @PostMapping("/update")
     DatasourceDTO update(@RequestBody DatasourceDTO dataSourceDTO) throws DEException;
