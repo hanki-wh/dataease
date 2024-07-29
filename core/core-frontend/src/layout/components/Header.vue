@@ -19,6 +19,7 @@ import AiComponent from '@/layout/components/AiComponent.vue'
 import { findBaseParams } from '@/api/aiComponent'
 import ExportExcel from '@/views/visualized/data/dataset/ExportExcel.vue'
 import AiTips from '@/layout/components/AiTips.vue'
+import ExportReportPop from '@/layout/components/ExportPop.vue'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const { push } = useRouter()
@@ -88,6 +89,13 @@ const aiTipsConfirm = () => {
   wsCache.set('DE-AI-TIPS-CHECK', 'CHECKED')
   showOverlay.value = false
 }
+
+const showModal = ref(false)
+const showExportDialog = () => {
+  showModal.value = !showModal.value
+  alert(showModal.value)
+}
+
 onMounted(() => {
   initShowSystem()
   initShowToolbox()
@@ -119,7 +127,22 @@ onMounted(() => {
       @select="handleSelect"
     >
       <HeaderMenuItem v-for="menu in routers" :key="menu.path" :menu="menu"></HeaderMenuItem>
+      <div @click="showExportDialog">
+        <HeaderMenuItem
+          :menu="{
+            path: '/add-menu',
+            name: 'add Menu',
+            icon: 'fa fa-star',
+            meta: {
+              title: '报表导出'
+            }
+          }"
+        />
+      </div>
     </el-menu>
+    <div>
+      <ExportReportPop :open="showModal" />
+    </div>
     <div class="operate-setting" v-if="!desktop">
       <XpackComponent jsname="c3dpdGNoZXI=" />
       <el-icon

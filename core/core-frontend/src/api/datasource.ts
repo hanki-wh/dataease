@@ -166,3 +166,9 @@ export const listSyncRecord = (page: number, limit: number, dsId: number | strin
   request.post({ url: '/datasource/listSyncRecord/' + dsId + '/' + page + '/' + limit })
 
 export const getDeEngine = () => request.get({ url: '/engine/getEngine' })
+
+export const saveReportApi = async (data = {}): Promise<IResponse> => {
+  return request.post({ url: '/datasource/saveReportApi', data }).then(res => {
+    return res?.data
+  })
+}
