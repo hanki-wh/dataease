@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    title=""
+    title="数据表"
     v-model="drawer"
     :direction="direction"
     :before-close="handleClose"
@@ -8,16 +8,16 @@
   >
     <div class="modal-container">
       <div class="continer">
-        <div class="header">数据表</div>
-        <div class="black-border"></div>
         <div class="middle-continer">
-          <div class="title">
-            <div>连接API</div>
-            <div>提取数据</div>
-          </div>
+          <el-steps :active="active" finish-status="success" align-center>
+            <el-step title="连接API" style="width: 200px"></el-step>
+            <el-step title="提取数据" style="width: 200px"></el-step>
+          </el-steps>
+          <!-- </div> -->
           <div class="gap"></div>
           <div>
-            <span>基础信息</span>
+            <span class="font">基础信息</span>
+            <div class="gap"></div>
             <div>
               <span>名称</span>
               <el-input placeholder="请输入名称" v-model="nameInput" clearable> </el-input>
@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div><button @click="handleSave">save</button></div>
+      <div class="gap"><button @click="handleSave" class="btn">保存</button></div>
     </div>
   </el-drawer>
 </template>
@@ -46,6 +46,11 @@ import { saveReportApi } from '@/api/datasource'
 
 const drawer = ref(false)
 const direction = ref('rtl')
+const active = ref(0)
+
+const next = () => {
+  active.value = (active.value + 1) % 3
+}
 
 const init = () => {
   drawer.value = true
@@ -77,7 +82,7 @@ defineExpose({
 </script>
 
 <style lang="less" scoped>
-.continer {
+.modal-continer {
   width: 80%;
   height: 100%;
   padding: 10px 25px;
@@ -98,10 +103,12 @@ defineExpose({
   border: 1px solid black;
   margin-top: 15px;
   margin-bottom: 20px;
+  width: 100%;
 }
-.title {
-  display: flex;
-  gap: 50px;
+.font {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
 }
 
 .url {
