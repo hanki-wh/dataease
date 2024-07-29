@@ -33,6 +33,15 @@
               </div>
             </div>
           </div>
+          <!-- HTTP 请求参数 -->
+          <el-form-item>
+            <api-http-request-form
+              v-if="edit_api_item"
+              :request="apiItem.request"
+              :value-list="valueList"
+              @changeId="changeId"
+            />
+          </el-form-item>
         </div>
       </div>
       <div class="gap"><button @click="handleSave" class="btn">保存</button></div>
@@ -43,6 +52,9 @@
 <script setup>
 import { ref } from 'vue'
 import { saveReportApi } from '@/api/datasource'
+import { ElMessage } from 'element-plus-secondary'
+// import type { ApiRequest } from 'src/views/visualized/data/datasource/form/ApiHttpRequestDraw.vue'
+// import ApiHttpRequestForm from 'src/views/visualized/data/datasource/form/ApiHttpRequestDraw.vue'
 
 const drawer = ref(false)
 const direction = ref('rtl')
@@ -72,7 +84,15 @@ const handleSave = () => {
     description: desUrl.value,
     apiUrl: apiUrl.value
   }).then(res => {
-    console.log(res)
+    if (res) {
+      ElMessage.success('保存成功')
+      nameInput.value = ''
+      desUrl.value = ''
+      apiUrl.value = ''
+      drawer.value = false
+    } else {
+      ElMessage.error('保存失败')
+    }
   })
 }
 
