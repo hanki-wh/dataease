@@ -266,7 +266,7 @@ const multiplexingCanvasOpen = () => {
           >
             <media-group></media-group>
           </component-group>
-          <component-group is-label :base-width="215" icon-name="dv-more-com" title="更多">
+          <component-group is-label :base-width="315" icon-name="dv-more-com" title="更多">
             <more-com-group></more-com-group>
           </component-group>
           <component-group
