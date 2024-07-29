@@ -27,6 +27,8 @@ import GroupArea from '@/custom-component/group-area/Component.vue'
 import GroupAreaAttr from '@/custom-component/group-area/Attr.vue'
 import DeFrame from '@/custom-component/de-frame/ComponentFrame.vue'
 import DeFrameAttr from '@/custom-component/de-frame/Attr.vue'
+import DeButton from '@/custom-component/de-button/Component.vue'
+import DeButtonAttr from '@/custom-component/de-button/Attr.vue'
 import DeVideo from '@/custom-component/de-video/Component.vue'
 import DeVideoAttr from '@/custom-component/de-video/Attr.vue'
 import DeStreamMedia from '@/custom-component/de-stream-media/Component.vue'
@@ -62,7 +64,9 @@ export const componentsMap = {
   GroupArea: GroupArea,
   GroupAreaAttr: GroupAreaAttr,
   DeFrame: DeFrame,
+  DeButton: DeButton,
   DeFrameAttr: DeFrameAttr,
+  DeButtonAttr: DeButtonAttr,
   DeVideo: DeVideo,
   DeVideoAttr: DeVideoAttr,
   DeStreamMedia: DeStreamMedia,

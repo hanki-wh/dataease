@@ -57,6 +57,13 @@ const handleDragEnd = e => {
       drag-info="DeFrame&DeFrame"
       v-on:click="newComponent('DeFrame')"
     ></drag-component>
+    <drag-component
+      :themes="themes"
+      name="Button"
+      label="按钮"
+      drag-info="DeButton&DeButton"
+      v-on:click="newComponent('DeButton')"
+    ></drag-component>
   </div>
 </template>
 

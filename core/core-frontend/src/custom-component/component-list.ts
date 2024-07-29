@@ -437,6 +437,24 @@ const list = [
     }
   },
   {
+    component: 'DeButton',
+    name: '按钮',
+    label: '按钮',
+    icon: 'icon_graphical',
+    propValue: {
+      url: ''
+    },
+    style: {
+      width: 200,
+      height: 100,
+      borderWidth: 1,
+      borderRadius: 5,
+      borderStyle: 'solid',
+      borderColor: '#fff',
+      backgroundColor: 'rgba(110, 103, 255, 1.0)'
+    }
+  },
+  {
     component: 'SvgTriangle',
     name: '三角形',
     label: '三角形',
