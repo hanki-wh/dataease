@@ -1,7 +1,7 @@
 <template>
   <el-button
     v-if="propValue['url']"
-    @click="downloadFile(propValue['url'])"
+    @click="downloadFile(propValue)"
     style="margin-right: 12px"
     type="primary"
   >
@@ -13,11 +13,7 @@
     </el-button>
     <template #dropdown>
       <el-dropdown-menu class="drop-style">
-        <el-dropdown-item
-          v-for="item in fileUrlList"
-          :key="item.id"
-          @click="updateUrl(item.apiUrl)"
-        >
+        <el-dropdown-item v-for="item in fileUrlList" :key="item.id" @click="updateUrl(item)">
           {{ item.name }}
         </el-dropdown-item>
       </el-dropdown-menu>
@@ -45,12 +41,20 @@ const props = defineProps({
 })
 const { propValue } = toRefs(props)
 let fileUrlList: any = reactive([])
-const updateUrl = (url: any) => {
-  propValue.value['url'] = url
+const updateUrl = (item: any) => {
+  propValue.value['url'] = item.apiUrl
+  propValue.value['name'] = item.name
 }
-const downloadFile = (url: any) => {
-  downloadOneFile(url).then(res => {
-    return res?.data
+const downloadFile = (item: any) => {
+  downloadOneFile(item.url).then(res => {
+    const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+    const link = document.createElement('a')
+    link.style.display = 'none'
+    link.href = URL.createObjectURL(blob)
+    link.download = item.name
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   })
 }
 

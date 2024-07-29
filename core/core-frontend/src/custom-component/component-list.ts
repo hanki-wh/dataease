@@ -442,7 +442,8 @@ const list = [
     label: '按钮',
     icon: 'icon_graphical',
     propValue: {
-      url: ''
+      url: '',
+      name: ''
     },
     style: {
       width: 200,
