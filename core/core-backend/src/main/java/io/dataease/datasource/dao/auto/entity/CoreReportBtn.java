@@ -29,15 +29,7 @@ public class CoreReportBtn implements Serializable {
      */
     private String name;
 
-    /**
-     * 描述
-     */
     private Long reportApiId;
-
-    /**
-     * 类型
-     */
-    private String apiUrl;
 
     public Long getId() {
         return id;
