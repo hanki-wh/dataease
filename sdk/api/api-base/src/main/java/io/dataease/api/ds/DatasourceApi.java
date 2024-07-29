@@ -9,11 +9,14 @@ import io.dataease.exception.DEException;
 import io.dataease.extensions.datasource.dto.DatasetTableDTO;
 import io.dataease.extensions.datasource.dto.DatasourceDTO;
 import io.dataease.extensions.datasource.dto.ReportApiDto;
+import io.dataease.extensions.datasource.dto.ReportBtnDto;
 import io.dataease.extensions.datasource.dto.TableField;
 import io.dataease.extensions.datasource.vo.DatasourceConfiguration;
 import io.dataease.model.BusiNodeRequest;
 import io.dataease.model.BusiNodeVO;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,6 +46,15 @@ public interface DatasourceApi {
 
     @GetMapping("/queryAllReportApi")
     List<ReportApiDto> queryAllReportApi();
+
+    @PostMapping("/saveBtnApiUrl")
+    void saveBtnApiUrl(ReportBtnDto reportBtnDto);
+
+    @GetMapping("/queryBtn/{btnId}")
+    ReportApiDto queryBtn(@PathVariable("btnId") String btnId);
+
+    @GetMapping("/download/report")
+    ResponseEntity<byte[]> testReport();
 
     @PostMapping("/update")
     DatasourceDTO update(@RequestBody DatasourceDTO dataSourceDTO) throws DEException;

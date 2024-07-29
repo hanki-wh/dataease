@@ -7,14 +7,17 @@ import io.dataease.commons.constants.TaskStatus;
 import io.dataease.constant.DataSourceType;
 import io.dataease.datasource.dao.auto.entity.CoreDatasource;
 import io.dataease.datasource.dao.auto.entity.CoreReportApi;
+import io.dataease.datasource.dao.auto.entity.CoreReportBtn;
 import io.dataease.datasource.dao.auto.mapper.CoreDatasourceMapper;
 import io.dataease.datasource.dao.auto.mapper.CoreReportApiMapper;
+import io.dataease.datasource.dao.auto.mapper.CoreReportBtnMapper;
 import io.dataease.datasource.dao.ext.mapper.DataSourceExtMapper;
 import io.dataease.datasource.dao.ext.po.DataSourceNodePO;
 import io.dataease.datasource.dto.DatasourceNodeBO;
 import io.dataease.exception.DEException;
 import io.dataease.extensions.datasource.dto.DatasourceDTO;
 import io.dataease.extensions.datasource.dto.ReportApiDto;
+import io.dataease.extensions.datasource.dto.ReportBtnDto;
 import io.dataease.i18n.Translator;
 import io.dataease.license.config.XpackInteract;
 import io.dataease.model.BusiNodeRequest;
@@ -47,6 +50,9 @@ public class DataSourceManage {
 
     @Resource
     private CoreReportApiMapper coreReportApiMapper;
+
+    @Resource
+    private CoreReportBtnMapper coreReportBtnMapper;
 
     private DatasourceNodeBO rootNode() {
         return new DatasourceNodeBO(0L, "root", false, 7, -1L, 0, "mysql");
@@ -97,7 +103,7 @@ public class DataSourceManage {
         coreReportApiMapper.insert(coreReportApi);
     }
 
-    @XpackInteract(value = "datasourceResourceTree", replace = true)
+    @XpackInteract(value = "datasourceResourceTree", replace = false)
     public List<ReportApiDto> getAllReportApi() {
         List<CoreReportApi> list = coreReportApiMapper.selectList(new QueryWrapper<>());
 
@@ -109,6 +115,25 @@ public class DataSourceManage {
                 BeanUtils.copyBean(reportApiDto, e);
             });
         return res;
+    }
+
+    @XpackInteract(value = "datasourceResourceTree", before = false)
+    public void innerSaveReportBtn(ReportBtnDto reportBtnDto) {
+        CoreReportBtn coreReportBtn = new CoreReportBtn();
+        BeanUtils.copyBean(coreReportBtn, reportBtnDto);
+        coreReportBtnMapper.insert(coreReportBtn);
+    }
+
+    @XpackInteract(value = "datasourceResourceTree", replace = false)
+    public ReportApiDto getReportBtn(Long btnId) {
+        CoreReportBtn coreReportBtn = coreReportBtnMapper.selectById(btnId);
+        if (coreReportBtn == null) {
+            return null;
+        }
+        CoreReportApi coreReportApi = coreReportApiMapper.selectById(coreReportBtn.getReportApiId());
+        ReportApiDto reportApiDto= new ReportApiDto();
+        BeanUtils.copyBean(reportApiDto, coreReportApi);
+        return reportApiDto;
     }
 
 
