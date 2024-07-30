@@ -21,10 +21,10 @@
               <div>请求</div>
               <div class="url-input">
                 <el-select v-model="desUrl" placeholder="请选择">
-                  <el-option label="Get" value="Get"></el-option>
-                  <el-option label="Post" value="Post"></el-option>
-                  <el-option label="Put" value="Put"></el-option>
-                  <el-option label="Delete" value="Delete"></el-option>
+                  <el-option label="GET" value="GET"></el-option>
+                  <el-option label="POST" value="POST"></el-option>
+                  <el-option label="PUT" value="PUT"></el-option>
+                  <el-option label="DELETE" value="DELETE"></el-option>
                 </el-select>
                 <el-input placeholder="请输入完整地址" v-model="apiUrl"></el-input>
               </div>
