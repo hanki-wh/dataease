@@ -9,11 +9,6 @@
     <div class="modal-container">
       <div class="continer">
         <div class="middle-continer">
-          <el-steps :active="active" finish-status="success" align-center>
-            <el-step title="连接API" style="width: 200px"></el-step>
-            <el-step title="提取数据" style="width: 200px"></el-step>
-          </el-steps>
-          <!-- </div> -->
           <div class="gap"></div>
           <div>
             <span class="font">基础信息</span>
@@ -26,19 +21,21 @@
               <div>请求</div>
               <div class="url-input">
                 <el-select v-model="desUrl" placeholder="请选择">
-                  <el-option label="GET" value="1"></el-option>
-                  <el-option label="POST" value="2"></el-option>
+                  <el-option label="GET" value="Get"></el-option>
+                  <el-option label="POST" value="Post"></el-option>
+                  <el-option label="PUT" value="Put"></el-option>
+                  <el-option label="DELETE" value="Delete"></el-option>
                 </el-select>
                 <el-input placeholder="请输入完整地址" v-model="apiUrl"></el-input>
               </div>
             </div>
           </div>
-          <div class="gap"><button @click="handleSave" class="btn">保存</button></div>
-          <!-- HTTP 请求参数 -->
-          <!-- todo -->
+          <div class="gap">
+            <el-button @click="handleSave" class="btn" secondary>保存</el-button>
+          </div>
           <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="description" label="名称" width="180"></el-table-column>
-            <el-table-column prop="name" label="请求"></el-table-column>
+            <el-table-column prop="name" label="名称" width="100"></el-table-column>
+            <el-table-column prop="description" label="method"></el-table-column>
             <el-table-column prop="apiUrl" label="地址" width="280"></el-table-column>
           </el-table>
           <div></div>
@@ -51,7 +48,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { saveReportApi, getReportApi } from '@/api/datasource'
-import { ElMessage } from 'element-plus-secondary'
+import { ElMessage, ElButton } from 'element-plus-secondary'
 
 const tableData = ref([])
 onMounted(async () => {
@@ -69,7 +66,9 @@ onMounted(async () => {
 
 const drawer = ref(false)
 const direction = ref('rtl')
-const active = ref(0)
+const nameInput = ref('')
+const desUrl = ref('')
+const apiUrl = ref('')
 
 const init = () => {
   drawer.value = true
@@ -79,10 +78,6 @@ const handleClose = done => {
   drawer.value = false
   done()
 }
-
-const nameInput = ref('')
-const desUrl = ref('')
-const apiUrl = ref('')
 
 const handleSave = () => {
   // 处理保存逻辑
@@ -146,5 +141,11 @@ defineExpose({
 
 .url-input {
   display: flex;
+}
+
+.btn {
+  background-color: #3370ff;
+  //字体颜色
+  color: white;
 }
 </style>
