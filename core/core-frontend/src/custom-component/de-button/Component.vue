@@ -45,7 +45,7 @@ const updateUrl = (item: any) => {
 }
 const downloadFile = (item: any) => {
   downloadOneFile(item.url).then(res => {
-    const blob = new Blob([res], { type: 'text/plain' })
+    const blob = new Blob([res.data], { type: 'text/plain' })
     const link = document.createElement('a')
     link.style.display = 'none'
     link.href = URL.createObjectURL(blob)
