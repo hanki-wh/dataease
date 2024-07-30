@@ -240,7 +240,7 @@ const deepScale = computed(() => scale.value / 100)
           :show-position="showPosition"
           :search-count="searchCount"
           :scale="deepScale"
-          :disabled="true"
+          :disabled="false"
           :is-edit="false"
           @onPointClick="onPointClick"
         />

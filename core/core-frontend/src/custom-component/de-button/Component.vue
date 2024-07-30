@@ -1,16 +1,6 @@
 <template>
-  <el-button
-    v-if="propValue['url']"
-    @click="downloadFile(propValue)"
-    style="margin-right: 12px"
-    type="primary"
-  >
-    Button1
-  </el-button>
-  <el-dropdown v-else trigger="hover">
-    <el-button @click="queryAllReportInfo()" style="margin-right: 12px" type="primary">
-      Button2
-    </el-button>
+  <el-dropdown v-if="editMode == 'edit'" trigger="hover">
+    <el-button style="width: 100%; height: 100%" type="primary"> 外部报表导出 </el-button>
     <template #dropdown>
       <el-dropdown-menu class="drop-style">
         <el-dropdown-item v-for="item in fileUrlList" :key="item.id" @click="updateUrl(item)">
@@ -19,11 +9,17 @@
       </el-dropdown-menu>
     </template>
   </el-dropdown>
+
+  <el-button v-else @click="downloadFile(propValue)" style="margin-right: 12px" type="primary">
+    外部报表导出
+  </el-button>
 </template>
 
 <script setup lang="ts">
 import { downloadOneFile, queryAllReportApi } from '@/api/visualization/visualizationBackground'
-import { reactive, toRefs } from 'vue'
+import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
+import { reactive, toRefs, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 const props = defineProps({
   propValue: {
     type: String,
@@ -40,6 +36,8 @@ const props = defineProps({
   }
 })
 const { propValue } = toRefs(props)
+const dvMainStore = dvMainStoreWithOut()
+const { editMode } = storeToRefs(dvMainStore)
 let fileUrlList: any = reactive([])
 const updateUrl = (item: any) => {
   propValue.value['url'] = item.apiUrl
@@ -62,8 +60,17 @@ const queryAllReportInfo = () => {
   queryAllReportApi().then(response => {
     fileUrlList = response.data
   })
-  console.log('file:' + fileUrlList)
 }
+onMounted(() => {
+  queryAllReportInfo()
+})
 </script>
-
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.drop-style {
+  width: 180px;
+  :deep(.ed-dropdown-menu__item:not(.is_disabled):focus) {
+    color: inherit;
+    background-color: rgba(31, 35, 41, 0.1);
+  }
+}
+</style>

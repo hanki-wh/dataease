@@ -59,7 +59,7 @@ const handleDragEnd = e => {
     ></drag-component>
     <drag-component
       :themes="themes"
-      name="Button"
+      name="外部报表导出"
       label="按钮"
       drag-info="DeButton&DeButton"
       v-on:click="newComponent('DeButton')"
