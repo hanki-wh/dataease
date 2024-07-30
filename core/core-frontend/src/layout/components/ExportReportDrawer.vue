@@ -46,23 +46,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { saveReportApi, getReportApi } from '@/api/datasource'
 import { ElMessage, ElButton } from 'element-plus-secondary'
 
 const tableData = ref([])
-onMounted(async () => {
-  try {
-    getReportApi().then(res => {
-      if (res) {
-        console.log(res)
-        tableData.value = res
-      }
-    })
-  } catch (error) {
-    console.error('Error fetching data:', error)
-  }
-})
 
 const drawer = ref(false)
 const direction = ref('rtl')
@@ -70,8 +58,13 @@ const nameInput = ref('')
 const desUrl = ref('')
 const apiUrl = ref('')
 
-const init = () => {
+const init = async () => {
   drawer.value = true
+  await getReportApi().then(res => {
+    if (res) {
+      tableData.value = res
+    }
+  })
 }
 
 const handleClose = done => {
