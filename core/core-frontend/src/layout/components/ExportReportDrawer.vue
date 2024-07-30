@@ -36,7 +36,11 @@
           <el-table :data="tableData" stripe style="width: 100%">
             <el-table-column prop="name" label="名称" width="100"></el-table-column>
             <el-table-column prop="description" label="method"></el-table-column>
-            <el-table-column prop="apiUrl" label="地址" width="280"></el-table-column>
+            <el-table-column label="地址" width="280"
+              ><template #default="scope">
+                https://localhost:8100{{ scope.row.apiUrl }}
+              </template></el-table-column
+            >
           </el-table>
           <div></div>
         </div>
