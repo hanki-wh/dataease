@@ -30,8 +30,8 @@
               </div>
             </div>
           </div>
-          <div class="gap">
-            <el-button @click="handleSave" class="btn" secondary>保存</el-button>
+          <div class="gap btndiv">
+            <el-button @click="handleSave" class="btn" type="primary">保存</el-button>
           </div>
           <el-table :data="tableData" stripe style="width: 100%">
             <el-table-column prop="name" label="名称" width="100"></el-table-column>
@@ -143,9 +143,8 @@ defineExpose({
   display: flex;
 }
 
-.btn {
-  background-color: #3370ff;
-  //字体颜色
-  color: white;
+.btndiv {
+  display: flex;
+  flex-direction: row-reverse;
 }
 </style>
