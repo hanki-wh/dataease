@@ -38,7 +38,7 @@
             <el-table-column prop="description" label="method"></el-table-column>
             <el-table-column label="地址" width="280"
               ><template #default="scope">
-                https://localhost:8100{{ scope.row.apiUrl }}
+                http://localhost:8100{{ scope.row.apiUrl }}
               </template></el-table-column
             >
           </el-table>
